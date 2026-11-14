@@ -81,6 +81,20 @@ textarea, .form input, .form select, .bogen input { width: 100%; padding: 10px 1
 .menue button.gefahr { color: var(--rot); }
 .balken { height: 8px; overflow: hidden; border-radius: 4px; background: var(--rand); }
 .balken div { width: 0; height: 100%; background: var(--orange); transition: width .2s; }
+/* Mitmach-Rundgang: Ring um den echten Knopf (lässt jeden Tipp durch, dunkelt die Umgebung ab), darüber die Sprechblase.
+   Ring über den Bögen (.ebene 40), unter der Meldung (50); Blase über allem. */
+.rundgang-ring { position: fixed; z-index: 45; pointer-events: none; border: 3px solid var(--orange); border-radius: 12px; box-shadow: 0 0 0 4px rgba(255, 255, 255, .85), 0 0 0 200vmax rgba(0, 0, 0, .5); }
+.rundgang-blase { position: fixed; z-index: 60; width: min(420px, calc(100vw - 24px)); padding: 12px 14px 8px; border-radius: 14px; background: #fff; color: var(--text); box-shadow: 0 6px 24px rgba(0, 0, 0, .4); }
+.rundgang-blase small { display: block; color: var(--orange); font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.rundgang-blase p { margin: 4px 0 8px; font-size: 16px; line-height: 1.4; }
+.rundgang-knoepfe { display: flex; justify-content: space-between; gap: 8px; }
+.rundgang-knoepfe button { min-height: 44px; padding: 8px 16px; border-radius: 10px; font-weight: 600; }
+.rundgang-knoepfe [data-rundgang-beenden] { border: 0; background: none; color: var(--leise); }
+.rundgang-knoepfe [data-rundgang-weiter] { border: 1px solid var(--orange); background: #fff; color: var(--orange); }
+.rundgang-pfeil { position: absolute; width: 14px; height: 14px; background: #fff; transform: rotate(45deg); }
+.rundgang-pfeil.oben { top: -7px; }
+.rundgang-pfeil.unten { bottom: -7px; }
+.meldung.rundgang-oben { top: calc(12px + env(safe-area-inset-top)); bottom: auto; }
 @media (min-width: 600px) { .bilder { grid-template-columns: repeat(4, 1fr); } }
 [hidden] { display: none !important; }
 /* Testdaten-Seite: Kacheln und Knopf als Links */

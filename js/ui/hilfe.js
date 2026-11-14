@@ -53,6 +53,13 @@ export function eingabe(titel, vorgabe = "", { mehrzeilig = false, platzhalter =
     e.querySelector("[data-nein]").onclick = () => { ebeneZu(); res(null); };
   });
 }
+/* Bogen mit Überschrift, Text und eigenen Knöpfen, ohne Schließen über den Hintergrund (z. B. Begrüßung, Abschluss des Rundgangs).
+   knoepfe: [{ text, kennung, haupt, tun }] – „kennung“ wird zum Attribut data-<kennung>. */
+export function hinweisBogen(titel, text, knoepfe) {
+  const e = ebene(`<h2>${esc(titel)}</h2><p>${esc(text)}</p>${knoepfe.map((k, i) => `<button class="knopf${k.haupt ? " haupt" : ""}" data-k="${i}" data-${esc(k.kennung)}>${esc(k.text)}</button>`).join("")}`);
+  e.querySelectorAll("[data-k]").forEach((b) => { b.onclick = () => knoepfe[Number(b.dataset.k)].tun(); });
+  return e;
+}
 export function menue(titel, eintraege) {
   const e = ebene(`<h2>${esc(titel)}</h2><div class="menue">${eintraege.map((m, i) => `<button data-i="${i}" class="${m.gefahr ? "gefahr" : ""}">${esc(m.text)}</button>`).join("")}</div><button class="knopf" data-nein>Schließen</button>`);
   e.querySelectorAll("[data-i]").forEach((b) => { b.onclick = () => { ebeneZu(); eintraege[Number(b.dataset.i)].tun(); }; });

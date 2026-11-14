@@ -176,3 +176,7 @@ export async function tourLoeschen(nr) {
   return { kunden: kunden.length, fotos: fotos.length, notizen: notizen.length };
 }
 export async function letzteSicherung(nr) { return (await S.holen("touren", nr))?.letzteSicherung || null; }
+
+/* Einstellungen der App auf diesem Gerät (keine Kundendaten): Schlüssel → Wert, unbekannt → undefined. */
+export async function einstellung(k) { return (await S.holen("einstellungen", k))?.w; }
+export function einstellungSetzen(k, w) { return S.schreiben("einstellungen", { k, w }); }

@@ -1,13 +1,16 @@
 /* Gerätespeicher (IndexedDB) der GVL-App.
    ⛔ Kundendaten NIE im Web-Speicher des Browsers (Schlüssel-Wert-Ablage) – sie bleiben in dieser Datenbank auf dem Gerät.
-   Bilddateien liegen getrennt („fotodaten"), damit Listen und Zählungen keine Bilder laden. */
-const NAME = "gvl-app", VERSION = 1;
+   Bilddateien liegen getrennt („fotodaten"), damit Listen und Zählungen keine Bilder laden.
+   Version 2: „einstellungen“ (z. B. ob der Rundgang schon angeboten wurde). Beim Hochzählen werden nur fehlende Bereiche angelegt –
+   vorhandene Kunden, Fotos und Notizen bleiben unberührt. */
+const NAME = "gvl-app", VERSION = 2;
 const BEREICHE = {
   touren: { key: "nr", indizes: [] },
   kunden: { key: "id", indizes: ["tour"] },
   fotos: { key: "id", indizes: ["kunde", "tour"] },
   fotodaten: { key: "id", indizes: [] },
   notizen: { key: "id", indizes: ["kunde", "tour"] },
+  einstellungen: { key: "k", indizes: [] },
 };
 let offen = null;
 const anfrage = (r) => new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });

@@ -30,3 +30,6 @@ export function mb(bytes) {
 export function tourDatei(nr) { return "Tour " + zwei(nr); }
 export function neueId(praefix) { return `${praefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`; }
 export function anzeigeName(k) { return [k.name1, k.name2].filter(Boolean).join(" "); }
+/* Eigene Kunden: selbst angelegt (quelle „neu“) oder mit einer Kd-Nr. ohne „D9“ – die erfundenen Beispielkunden tragen „D9…“.
+   Wo solche Kunden in Tour 11 stehen, darf weder die Beispieltour (touren.js) noch der Rundgang (rundgang.js) etwas tun, was sie vermischt oder verändert. */
+export function eigeneKunden(kunden) { return kunden.filter((k) => k.quelle === "neu" || !String(k.kdNr ?? "").startsWith("D9")); }

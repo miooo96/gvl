@@ -1,10 +1,11 @@
 /* Ebene 1: Touren. Eine Tour ohne Eintrag zeigt „Öffnen →“ und legt sich beim Antippen leer an (Kunden selbst anlegen);
    Tourliste laden, Wiederherstellen aus einer Sicherung und die Beispieltour (Tour 11, erfundene Kunden) stehen im Menü;
-   solange noch gar keine Kunden da sind, bietet eine Karte die Beispieltour direkt an. */
+   solange noch gar keine Kunden da sind, bietet eine Karte die Beispieltour direkt an. Der Rundgang lässt sich hier jederzeit neu starten. */
 import * as D from "../daten.js";
 import { sicherungEinspielen } from "../sicherung.js";
-import { esc, tageSeit } from "../werte.js";
+import { esc, tageSeit, eigeneKunden } from "../werte.js";
 import { seite, meldung, menue, frage, dateiWaehlen, jsonLesen, gehe, sicher, $ } from "./hilfe.js";
+import { rundgangStarten } from "./rundgang.js";
 
 const tageText = (n) => (n <= 0 ? "heute" : n === 1 ? "gestern" : `vor ${n} Tagen`);
 const sicherungText = (t) => (!t.letzteSicherung
@@ -20,7 +21,7 @@ export async function ansichtTouren() {
     <p class="leise" data-summe>${geladen.length} von 11 Touren angelegt · ${summe.toLocaleString("de-DE")} Kunden · ${neu} neu</p>${summe === 0 ? `
     <div class="karte hinweis-beispiel"><b>Zum Ausprobieren</b><p class="leise">Lädt Tour 11 mit erfundenen Kunden. Danach einfach über Tour 11 → ⋮ → „Tour löschen“ wieder entfernen.</p><button class="knopf haupt" data-beispiel>Beispieltour laden</button></div>` : ""}
     <div class="kacheln">${touren.map((t) => (t.geladen ? `
-      <button class="kachel" data-tour="${t.nr}"><b>Tour ${t.nr}</b><span>${t.kunden} Kunden</span>
+      <button class="kachel" data-tour="${t.nr}" data-kunden="${t.kunden}"><b>Tour ${t.nr}</b><span>${t.kunden} Kunden</span>
         <span>${t.mitEintraegen ? `${t.mitEintraegen} mit Einträgen` : "noch keine Einträge"}${t.neu ? ` · <em>${t.neu} neu</em>` : ""}</span>
         <span class="sicherung${t.warnung ? " warnung" : ""}">${esc(sicherungText(t))}</span></button>` : `
       <button class="kachel" data-leer="${t.nr}"><b>Tour ${t.nr}</b><span>noch keine Kunden</span><span class="laden">Öffnen →</span></button>`)).join("")}
@@ -40,12 +41,13 @@ export async function ansichtTouren() {
     { text: "Tour laden", tun: () => tourLadenDialog() },
     { text: "Aus Sicherung wiederherstellen", tun: () => wiederherstellenDialog() },
     { text: "Beispieltour zum Ausprobieren laden", tun: () => beispielLaden() },
+    { text: "Rundgang starten", tun: () => rundgangStarten() },
   ]);
 }
 
 /* Tour 11 mit erfundenen Kunden aus beispiel/tour-11.json (liegt im Offline-Speicher). Kunden aus der Datei kommen zu vorhandenen dazu –
    Fotos und Notizen bleiben; deshalb Rückfrage, wenn Tour 11 schon (erfundene) Kunden hat.
-   Nie über eigene Kunden: Ein selbst angelegter Kunde (quelle „neu“) oder eine Kd-Nr. ohne „D9“ sperrt das Laden – sonst würde
+   Nie über eigene Kunden (werte.js, eigeneKunden): Ein selbst angelegter Kunde oder eine Kd-Nr. ohne „D9“ sperrt das Laden – sonst würde
    „Tour löschen“ später auch seine Kunden, Fotos und Notizen entfernen. Doppeltipp: solange ein Laden läuft, tut jeder weitere Aufruf nichts. */
 let beispielLaeuft = false;
 export async function beispielLaden(nachher = ansichtTouren) {
@@ -53,7 +55,7 @@ export async function beispielLaden(nachher = ansichtTouren) {
   beispielLaeuft = true;
   try {
     const kunden = await D.kundenDerTour(11);
-    if (kunden.some((k) => k.quelle === "neu" || !String(k.kdNr ?? "").startsWith("D9"))) {
+    if (eigeneKunden(kunden).length) {
       meldung("Tour 11 enthält schon eigene Kunden – die Beispieltour wird dort nicht geladen, damit nichts vermischt wird.", { ms: 12000 });
       return;
     }

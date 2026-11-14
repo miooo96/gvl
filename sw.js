@@ -1,7 +1,7 @@
 /* Offline-Speicher der GVL-App. Netz zuerst, Zwischenspeicher nur ohne Netz (Lehre vom 05.09.2026:
    nie eine alte Fassung, solange Empfang besteht). Gespeichert wird nur das Programm – Kundendaten liegen in IndexedDB.
    Bei jeder Programmänderung CACHE hochzählen. */
-const CACHE = "gvl-v10";
+const CACHE = "gvl-v12";
 const DATEIEN = [
   "./", "index.html", "app.css", "manifest.webmanifest", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png",
   "js/werte.js", "js/tourdatei.js", "js/speicher.js", "js/daten.js", "js/zip.js", "js/pdf.js", "js/tourpdf.js", "js/sicherung.js", "js/teilen.js",
@@ -12,6 +12,7 @@ const DATEIEN = [
   "js/ui/akte.js",
   "js/ui/kundenform.js",
   "js/ui/foto.js",
+  "js/ui/rundgang.js",
   "beispiel/tour-11.json",
 ];
 

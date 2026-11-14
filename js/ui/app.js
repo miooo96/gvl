@@ -1,6 +1,7 @@
 /* Einstieg und Wegweiser. Drei Ebenen über die Adresse (#/…), damit die Android-Zurück-Taste genau eine Ebene zurückgeht. */
 import { dauerhaftAnfordern } from "../speicher.js";
 import { ebeneZu, meldung } from "./hilfe.js";
+import { begruessen } from "./rundgang.js";
 
 const WEGE = [
   [/^#\/?$/, () => import("./touren.js").then((m) => m.ansichtTouren())],
@@ -11,7 +12,7 @@ const WEGE = [
   [/^#\/bearbeiten\/(.+)$/, (t) => import("./kundenform.js").then((m) => m.ansichtKundenform({ id: decodeURIComponent(t[1]) }))],
 ];
 const scrollStand = new Map();
-let aktuell = null, lauf = 0, zuletztFertig = 0;
+let aktuell = null, lauf = 0, zuletztFertig = 0, begruessungGeprueft = false;
 
 async function zeigen() {
   const nr = ++lauf;   // jede Navigation bekommt eine Nummer – nur die neueste darf die Seite bestimmen
@@ -24,6 +25,11 @@ async function zeigen() {
       if (!t) continue;
       await ansicht(t);
       if (nr !== lauf) { if (zuletztFertig === lauf) zeigen(); return; }   // veraltet: neuere Ansicht ggf. neu zeichnen
+      // Erster Start: Begrüßung mit Angebot des Rundgangs – steht schon, wenn die Ansicht als bereit gilt
+      if (!begruessungGeprueft && muster === WEGE[0][0]) {
+        begruessungGeprueft = await begruessen(() => nr === lauf);
+        if (nr !== lauf) { if (zuletztFertig === lauf) zeigen(); return; }
+      }
       aktuell = h; zuletztFertig = nr;
       window.scrollTo(0, scrollStand.get(h) || 0);
       document.body.dataset.bereit = h;
