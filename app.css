@@ -1,0 +1,88 @@
+/* Farben (Mirko 13.11.2026: Richtung A). Unterschiede nur nach Breite – nie nach Installationsstatus. */
+:root { --braun: #612a00; --orange: #de7008; --creme: #f0e7d8; --karte: #fff; --rand: #e3d5bf; --text: #2b1a0e; --leise: #7a6858; --rot: #b42318; --gruen: #3d7a3a; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--creme); color: var(--text); font: 15px/1.4 Roboto, "Segoe UI", system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+body:has(.foto-seite) { background: #111; }
+#app { max-width: 720px; margin: 0 auto; min-height: 100vh; padding-bottom: 96px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.kopf { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 8px; padding: calc(10px + env(safe-area-inset-top)) 8px 12px 14px; background: var(--braun); color: #fff; }
+.kopf h1 { flex: 1; min-width: 0; margin: 0; font-size: 18px; font-weight: 600; }
+.kopf h1 small { display: block; font-size: 12px; font-weight: 400; opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kopf .ikon { width: 44px; height: 44px; flex: none; border: 0; border-radius: 22px; background: transparent; color: #fff; font-size: 22px; }
+.inhalt { padding: 10px 12px; }
+.leise { color: var(--leise); font-size: 13px; }
+.leer { padding: 40px 16px; text-align: center; color: var(--leise); }
+.kacheln { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.kachel { display: flex; flex-direction: column; justify-content: flex-start; min-height: 112px; padding: 11px; text-align: left; background: var(--karte); border: 1px solid var(--rand); border-radius: 12px; }
+.kachel b { display: block; font-size: 17px; color: var(--braun); }
+.kachel span { display: block; font-size: 12px; color: var(--leise); }
+.kachel em { font-style: normal; color: var(--orange); font-weight: 600; }
+.kachel .sicherung { margin-top: 5px; font-size: 11.5px; color: var(--gruen); }
+.kachel .sicherung.warnung { color: var(--rot); font-weight: 600; }
+.kachel .laden { color: var(--orange); font-weight: 600; }
+.suche { width: 100%; padding: 11px 12px; border: 1px solid var(--rand); border-radius: 10px; background: #fff; }
+.chips { display: flex; gap: 6px; margin: 8px 0 10px; }
+.chip { padding: 6px 12px; border: 1px solid var(--rand); border-radius: 16px; background: #fff; color: var(--braun); font-size: 13px; }
+.chip[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); color: #fff; }
+.zeile { display: flex; align-items: center; gap: 10px; width: 100%; margin-bottom: 6px; padding: 11px 12px; text-align: left; background: var(--karte); border: 1px solid var(--rand); border-radius: 10px; }
+.zeile .name { flex: 1; min-width: 0; }
+.zeile .name b { display: block; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zeile .name span { font-size: 12.5px; color: var(--leise); }
+.zeile .zeichen { font-size: 12px; white-space: nowrap; color: var(--leise); }
+.marke { padding: 2px 6px; border-radius: 4px; background: var(--orange); color: #fff; font-size: 10.5px; font-weight: 700; white-space: nowrap; }
+.marke.grau { background: #8a7a6a; }
+.fab { position: fixed; right: max(16px, calc(50vw - 344px)); bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 20; padding: 14px 20px; border: 0; border-radius: 16px; background: var(--orange); color: #fff; font-weight: 600; box-shadow: 0 3px 10px rgba(0, 0, 0, .25); }
+.abschnitt { display: flex; justify-content: space-between; align-items: baseline; margin: 14px 4px 6px; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--braun); }
+.abschnitt button { border: 0; background: none; color: var(--orange); font-size: 13px; font-weight: 600; text-transform: none; letter-spacing: 0; }
+.karte { padding: 10px 12px; background: var(--karte); border: 1px solid var(--rand); border-radius: 12px; }
+.feld { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid #f3ece1; font-size: 14px; }
+.feld:last-child { border-bottom: 0; }
+.feld i { font-style: normal; color: var(--leise); white-space: nowrap; }
+.feld span, .feld a { text-align: right; }
+.feld a { color: var(--orange); font-weight: 600; text-decoration: none; }
+.hinweis { margin: 0 0 8px; padding: 8px 12px; border-radius: 10px; background: #fff3e6; color: #8a4a00; font-size: 13px; }
+.bilder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.bilder button { position: relative; aspect-ratio: 1; padding: 0; border: 0; border-radius: 8px; overflow: hidden; background: #c9b8a0; }
+.bilder img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.bilder .mass { position: absolute; right: 4px; bottom: 3px; font-size: 13px; }
+.knoepfe { display: flex; gap: 6px; margin-top: 8px; }
+.knopf { flex: 1; padding: 10px 0; border: 1px solid var(--orange); border-radius: 10px; background: #fff; color: var(--orange); font-weight: 600; }
+.knopf.haupt { background: var(--orange); color: #fff; }
+.hinweis-beispiel { margin: 0 0 12px; }
+.hinweis-beispiel b { color: var(--braun); }
+.hinweis-beispiel p { margin: 4px 0 10px; }
+.hinweis-beispiel .knopf { display: block; width: 100%; padding: 12px 0; }
+.notiz { margin-bottom: 6px; padding: 9px 12px; background: var(--karte); border: 1px solid var(--rand); border-radius: 12px; }
+.notiz small { display: block; color: var(--leise); font-size: 11.5px; }
+.notiz p { margin: 2px 0 4px; white-space: pre-wrap; }
+.notiz .aktionen button { padding: 4px 8px 0 0; border: 0; background: none; color: var(--orange); font-size: 13px; }
+textarea, .form input, .form select, .bogen input { width: 100%; padding: 10px 12px; border: 1px solid var(--rand); border-radius: 10px; background: #fff; }
+.form label { display: block; margin: 10px 0 4px; font-size: 13px; color: var(--leise); }
+.foto-seite { min-height: 100vh; background: #111; color: #fff; }
+.foto-seite .kopf { background: #111; }
+.foto-rahmen { position: relative; margin: 0 auto; }
+.foto-rahmen img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+.foto-rahmen svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.foto-rahmen.ziehen svg { touch-action: none; cursor: crosshair; }
+.unterschrift { padding: 10px 14px; color: #ccc; font-size: 14px; }
+.leiste { position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-around; padding: 10px 6px calc(14px + env(safe-area-inset-bottom)); background: #1d1d1d; }
+.leiste button { min-width: 64px; border: 0; background: none; color: #ddd; font-size: 12px; }
+.leiste button b { display: block; font-size: 20px; }
+.leiste button[aria-pressed="true"] { color: var(--orange); }
+.meldung { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom)); z-index: 50; display: flex; align-items: center; gap: 14px; max-width: calc(100% - 24px); padding: 12px 16px; transform: translateX(-50%); border-radius: 10px; background: #2b1a0e; color: #fff; font-size: 14px; box-shadow: 0 3px 12px rgba(0, 0, 0, .3); }
+.meldung button { border: 0; background: none; color: #ffb066; font-weight: 700; }
+.ebene { position: fixed; inset: 0; z-index: 40; display: flex; align-items: flex-end; justify-content: center; background: rgba(0, 0, 0, .45); }
+.bogen { width: 100%; max-width: 720px; max-height: 85vh; overflow: auto; padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); border-radius: 16px 16px 0 0; background: var(--creme); color: var(--text); }
+.bogen h2 { margin: 0 0 6px; font-size: 17px; color: var(--braun); }
+.bogen p { margin: 0 0 12px; }
+.bogen .knopf { display: block; width: 100%; margin-top: 8px; padding: 13px 0; }
+.menue button { display: block; width: 100%; padding: 14px 6px; text-align: left; border: 0; border-bottom: 1px solid var(--rand); background: none; font-size: 15px; }
+.menue button.gefahr { color: var(--rot); }
+.balken { height: 8px; overflow: hidden; border-radius: 4px; background: var(--rand); }
+.balken div { width: 0; height: 100%; background: var(--orange); transition: width .2s; }
+@media (min-width: 600px) { .bilder { grid-template-columns: repeat(4, 1fr); } }
+[hidden] { display: none !important; }
+/* Testdaten-Seite: Kacheln und Knopf als Links */
+a.kachel, a.knopf { text-decoration: none; color: inherit; }
+a.knopf { display: inline-block; padding: 12px 24px; text-align: center; }
